@@ -1,12 +1,37 @@
-/AUTO_PAYOUT_IMPLEMENTATION.md
-/AUTO_PAYOUT_README.md
-/BETTING_CONTRACT_README.md
-/MLHG_DEPLOYMENT_README.md
-/PAINTSWAP_VRF_GUIDE.md
-/PayoutContract-README.md
-/QUICK_START_GUIDE.md
-/RULES.md
-/SONIC_TESTNET_OPTIMIZATION.md
-/挖矿合约设计文档.md
-/派奖合约设计文档.md
+# 依赖包
 node_modules/
+
+# 构建输出
+dist/
+build/
+
+# 环境变量
+.env
+.env.local
+.env.*.local
+
+# 缓存文件
+cache/
+.cache/
+
+# IDE配置
+.vscode/settings.json
+.idea/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志文件
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Hardhat文件
+artifacts/
+coverage/
+
+# 临时文件
+*.tmp
+*.temp
