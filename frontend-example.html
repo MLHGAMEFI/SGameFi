@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SGameFi 下注合约示例</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .status-bar {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .status-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .status-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .betting-section {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 10px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .radio-item:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .radio-item input[type="radio"]:checked + .radio-label {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .bet-history {
+            background: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .bet-item {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .bet-item.winner {
+            border-left-color: #28a745;
+            background: #f8fff9;
+        }
+
+        .bet-item.loser {
+            border-left-color: #dc3545;
+            background: #fff8f8;
+        }
+
+        .bet-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #alertContainer {
+            margin-bottom: 15px;
+        }
+
+        #alertContainer:empty {
+            margin-bottom: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .status-bar {
+                flex-direction: column;
+            }
+
+            .radio-group {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .bet-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎲 SGameFi 下注游戏</h1>
+            <p>基于智能合约的单双数投注游戏</p>
+        </div>
+
+        <!-- 连接状态栏 -->
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-label">钱包状态</div>
+                <div class="status-value" id="walletStatus">未连接</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">网络</div>
+                <div class="status-value" id="networkStatus">-</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">余额</div>
+                <div class="status-value" id="balance">0 S</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">合约状态</div>
+                <div class="status-value" id="contractStatus">未连接</div>
+            </div>
+        </div>
+
+        <!-- 连接钱包按钮 -->
+        <div class="betting-section" id="connectSection">
+            <div id="alertContainer"></div>
+            <div class="section-title">连接钱包开始游戏</div>
+            <button class="btn" onclick="connectWallet()">连接 MetaMask</button>
+        </div>
+
+        <!-- 投注区域 -->
+        <div class="betting-section hidden" id="bettingSection">
+            <div class="section-title">🎯 下注区域</div>
+            
+            <div id="alertContainer"></div>
+
+            <div class="form-group">
+                <label class="form-label">选择代币类型</label>
+                <select class="form-control" id="tokenSelect">
+                    <option value="native">原生代币 (S)</option>
+                    <option value="0x0A27117Af64E4585d899cC4aAD96A982f3Fa85FF">MLH 代币</option>
+                    <option value="0xbca3aEC27772B6dD9aB68cF0a3F3d084f39e8dfb">MLHG 代币</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">投注金额 (1-1000)</label>
+                <input type="number" class="form-control" id="betAmount" min="1" max="1000" value="10" placeholder="输入投注金额">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">选择你的预测</label>
+                <div class="radio-group">
+                    <label class="radio-item">
+                        <input type="radio" name="prediction" value="true" checked>
+                        <span class="radio-label">🎲 双数 (2,4,6,8,10)</span>
+                    </label>
+                    <label class="radio-item">
+                        <input type="radio" name="prediction" value="false">
+                        <span class="radio-label">🎯 单数 (1,3,5,7,9)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>投注金额:</span>
+                        <span id="displayBetAmount">10 S</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>VRF 费用:</span>
+                        <span id="displayVrfFee">0.001 S</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                        <span>总计:</span>
+                        <span id="displayTotal">10.001 S</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-weight: bold; color: #28a745;">
+                        <span>中奖可得:</span>
+                        <span id="displayPayout">19 S</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn" id="placeBetBtn" onclick="placeBet()">🎲 下注</button>
+        </div>
+
+        <!-- 投注历史 -->
+        <div class="bet-history hidden" id="historySection">
+            <div class="section-title">📊 我的投注记录</div>
+            <div id="betHistoryContainer">
+                <div style="text-align: center; color: #666; padding: 20px;">
+                    暂无投注记录
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="refreshHistory()">刷新记录</button>
+        </div>
+    </div>
+
+    <!-- 使用更可靠的CDN源 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js" 
+            crossorigin="anonymous" 
+            referrerpolicy="no-referrer"></script>
+    <!-- 备用CDN源 -->
+    <script>
+        // 检查ethers是否加载成功，如果失败则使用备用源
+        if (typeof ethers === 'undefined') {
+            console.log('主CDN加载失败，尝试备用CDN...');
+            const script = document.createElement('script');
+            script.src = 'https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js';
+            script.onload = function() {
+                console.log('备用CDN加载成功');
+                // 重新初始化应用
+                if (typeof initializeApp === 'function') {
+                    initializeApp();
+                }
+            };
+            script.onerror = function() {
+                console.error('所有CDN都加载失败，请检查网络连接');
+                // 显示错误信息但保留连接按钮
+                const alertContainer = document.getElementById('alertContainer') || document.createElement('div');
+                if (!document.getElementById('alertContainer')) {
+                    alertContainer.id = 'alertContainer';
+                    const connectSection = document.getElementById('connectSection');
+                    connectSection.insertBefore(alertContainer, connectSection.firstChild);
+                }
+                alertContainer.innerHTML = `
+                    <div class="alert alert-error">
+                        <strong>网络连接错误</strong><br>
+                        无法加载必要的库文件，请检查您的网络连接。<br>
+                        <button class="btn btn-secondary" onclick="location.reload()" style="margin-top: 10px;">刷新页面重试</button>
+                    </div>
+                `;
+            };
+            document.head.appendChild(script);
+        }
+    </script>
+    <script>
+        // 合约配置
+        const SONIC_TESTNET = {
+            chainId: '0xDEF6', // 57054
+            chainName: 'Sonic Blaze Testnet',
+            nativeCurrency: {
+                name: 'Sonic',
+                symbol: 'S',
+                decimals: 18
+            },
+            rpcUrls: ['https://rpc.blaze.soniclabs.com'],
+            blockExplorerUrls: ['https://testnet.sonicscan.org/']
+        };
+
+        // 合约地址 (已更新为实际部署的地址)
+        const BETTING_CONTRACT_ADDRESS = '0xB3f8b9631e91d67e681f578b2967bb00dD0Ce495'; // BettingContract合约地址
+        
+        // 合约 ABI (简化版)
+        const BETTING_CONTRACT_ABI = [
+            "function placeBetNative(bool predictedIsEven) external payable",
+            "function placeBetToken(address tokenAddress, uint256 amount, bool predictedIsEven) external payable",
+            "function requestDiceRoll(uint256 betId) external",
+            "function getBetRecord(uint256 betId) external view returns (tuple(address player, uint256 amount, address tokenAddress, bool predictedIsEven, uint256 blockNumber, uint256 diceRequestId, bool isSettled, bool isWinner, uint256 timestamp, bool diceRollCompleted))",
+            "function getPlayerBets(address player) external view returns (uint256[])",
+            "function canRequestDiceRoll(uint256 betId) external view returns (bool)",
+            "function vrfFee() external view returns (uint256)",
+            "function nextBetId() external view returns (uint256)",
+            "event BetPlaced(uint256 indexed betId, address indexed player, address tokenAddress, uint256 amount, bool predictedIsEven, uint256 timestamp)",
+            "event BetSettled(uint256 indexed betId, address indexed player, uint256 diceRequestId, bool actualIsEven, bool isWinner, uint256 payout, uint256 timestamp)",
+            "event DiceRollRequested(uint256 indexed betId, uint256 indexed diceRequestId, uint256 blockNumber)"
+        ];
+
+        // ERC20 ABI
+        const ERC20_ABI = [
+            "function approve(address spender, uint256 amount) external returns (bool)",
+            "function allowance(address owner, address spender) external view returns (uint256)",
+            "function balanceOf(address account) external view returns (uint256)",
+            "function decimals() external view returns (uint8)",
+            "function symbol() external view returns (string)"
+        ];
+
+        // 全局变量
+        let provider;
+        let signer;
+        let bettingContract;
+        let userAddress;
+        let vrfFee;
+
+        /**
+         * 重置UI到初始状态
+         */
+        function resetUIToInitialState() {
+            // 显示连接区域，隐藏其他区域
+            document.getElementById('connectSection').classList.remove('hidden');
+            document.getElementById('bettingSection').classList.add('hidden');
+            document.getElementById('historySection').classList.add('hidden');
+            
+            // 重置状态显示
+            document.getElementById('walletStatus').textContent = '未连接';
+            document.getElementById('networkStatus').textContent = '-';
+            document.getElementById('balance').textContent = '0 S';
+            document.getElementById('contractStatus').textContent = '未连接';
+            
+            // 重置连接按钮
+            const connectBtn = document.querySelector('#connectSection .btn');
+            if (connectBtn) {
+                connectBtn.disabled = false;
+                connectBtn.textContent = '连接 MetaMask';
+                connectBtn.onclick = connectWallet;
+            }
+        }
+
+        // 初始化应用函数
+        async function initializeApp() {
+            // 等待一段时间确保ethers库加载完成
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // 检查ethers库是否加载成功
+            if (typeof ethers === 'undefined') {
+                console.log('ethers库未加载，等待加载...');
+                return; // 不显示错误，等待库加载完成
+            }
+            
+            // 清除之前的错误信息
+            const existingAlert = document.getElementById('alertContainer');
+            if (existingAlert && existingAlert.innerHTML.includes('网络连接错误')) {
+                existingAlert.innerHTML = '';
+            }
+            
+            // 检查MetaMask
+            if (typeof window.ethereum !== 'undefined') {
+                console.log('MetaMask 已安装');
+                
+                // 检查是否已连接
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                    if (accounts.length > 0) {
+                        await connectWallet();
+                    } else {
+                        showAlert('请点击"连接 MetaMask"按钮开始使用', 'info');
+                    }
+                } catch (error) {
+                    console.error('检查账户失败:', error);
+                    showAlert('MetaMask 连接检查失败，请确保 MetaMask 正常运行', 'error');
+                }
+            } else {
+                // 显示MetaMask安装指导，但保留原有的连接按钮结构
+                const connectSection = document.getElementById('connectSection');
+                const alertContainer = document.getElementById('alertContainer') || document.createElement('div');
+                if (!document.getElementById('alertContainer')) {
+                    alertContainer.id = 'alertContainer';
+                    connectSection.insertBefore(alertContainer, connectSection.firstChild);
+                }
+                
+                alertContainer.innerHTML = `
+                    <div class="alert alert-info">
+                        <strong>🦊 需要安装 MetaMask</strong><br>
+                        MetaMask 是一个浏览器钱包插件，用于与区块链应用交互。<br>
+                        <a href="https://metamask.io" target="_blank" style="color: #667eea;">点击这里下载 MetaMask</a>
+                    </div>
+                `;
+                
+                // 更新连接按钮文本和功能
+                const connectBtn = connectSection.querySelector('.btn');
+                if (connectBtn) {
+                    connectBtn.textContent = '前往下载 MetaMask';
+                    connectBtn.onclick = () => window.open('https://metamask.io', '_blank');
+                }
+            }
+
+            // 更新显示金额
+            updateDisplayAmounts();
+        }
+
+        /**
+         * 设置MetaMask事件监听器
+         */
+        function setupMetaMaskListeners() {
+            if (typeof window.ethereum !== 'undefined') {
+                // 监听账户变化
+                window.ethereum.on('accountsChanged', function (accounts) {
+                    console.log('账户变化:', accounts);
+                    if (accounts.length === 0) {
+                        // 用户断开了连接
+                        resetUIToInitialState();
+                        showAlert('钱包已断开连接', 'info');
+                    } else {
+                        // 用户切换了账户，重新连接
+                        location.reload();
+                    }
+                });
+
+                // 监听网络变化
+                window.ethereum.on('chainChanged', function (chainId) {
+                    console.log('网络变化:', chainId);
+                    location.reload();
+                });
+            }
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', async () => {
+            // 重置到初始状态
+            resetUIToInitialState();
+            
+            // 设置MetaMask事件监听器
+            setupMetaMaskListeners();
+            
+            await initializeApp();
+            
+            // 如果ethers库未加载，每隔2秒重试一次
+            const retryInterval = setInterval(async () => {
+                if (typeof ethers !== 'undefined') {
+                    clearInterval(retryInterval);
+                    await initializeApp();
+                }
+            }, 2000);
+            
+            // 10秒后停止重试
+            setTimeout(() => {
+                clearInterval(retryInterval);
+            }, 10000);
+        });
+
+        // 连接钱包
+        async function connectWallet() {
+            try {
+                // 显示连接中状态
+                const connectBtn = document.querySelector('#connectSection .btn');
+                if (connectBtn) {
+                    connectBtn.disabled = true;
+                    connectBtn.innerHTML = '<span class="loading"></span> 连接中...';
+                }
+                
+                if (typeof window.ethereum === 'undefined') {
+                    throw new Error('未检测到 MetaMask，请安装后重试');
+                }
+
+                // 请求连接账户
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    if (!accounts || accounts.length === 0) {
+                        throw new Error('未授权访问钱包，请在 MetaMask 中批准连接请求');
+                    }
+                    userAddress = accounts[0];
+                } catch (requestError) {
+                    if (requestError.code === 4001) {
+                        // 用户拒绝了连接请求
+                        throw new Error('您拒绝了连接请求，请点击按钮重试');
+                    } else {
+                        throw new Error('连接钱包失败: ' + (requestError.message || '未知错误'));
+                    }
+                }
+
+                // 创建 provider 和 signer
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                signer = provider.getSigner();
+
+                // 检查网络
+                showAlert('正在检查网络...', 'info');
+                const network = await provider.getNetwork();
+                if (network.chainId !== 57054) {
+                    showAlert('需要切换到 Sonic 测试网...', 'info');
+                    await switchToSonicTestnet();
+                }
+
+                // 连接合约
+                showAlert('正在连接游戏合约...', 'info');
+                try {
+                    bettingContract = new ethers.Contract(BETTING_CONTRACT_ADDRESS, BETTING_CONTRACT_ABI, signer);
+                    
+                    // 测试合约连接
+                    await bettingContract.nextBetId();
+                } catch (contractError) {
+                    throw new Error('合约连接失败，请确保网络正确: ' + (contractError.message || '未知错误'));
+                }
+
+                // 获取 VRF 费用
+                try {
+                    vrfFee = await bettingContract.vrfFee();
+                } catch (feeError) {
+                    console.error('获取VRF费用失败:', feeError);
+                    vrfFee = ethers.utils.parseEther('0.001'); // 使用默认值
+                    showAlert('获取VRF费用失败，使用默认值', 'warning');
+                }
+
+                // 更新 UI
+                await updateWalletInfo();
+                document.getElementById('connectSection').classList.add('hidden');
+                document.getElementById('bettingSection').classList.remove('hidden');
+                document.getElementById('historySection').classList.remove('hidden');
+
+                // 加载投注历史
+                try {
+                    await loadBetHistory();
+                } catch (historyError) {
+                    console.error('加载投注历史失败:', historyError);
+                    showAlert('加载投注历史失败，但您仍可以进行投注', 'warning');
+                }
+
+                // 监听事件
+                try {
+                    setupEventListeners();
+                } catch (eventError) {
+                    console.error('设置事件监听失败:', eventError);
+                }
+
+                showAlert('钱包连接成功！', 'success');
+            } catch (error) {
+                console.error('连接钱包失败:', error);
+                showAlert('连接钱包失败: ' + error.message, 'error');
+                
+                // 重置UI到初始状态
+                resetUIToInitialState();
+            }
+        }
+
+        // 切换到 Sonic 测试网
+        async function switchToSonicTestnet() {
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: SONIC_TESTNET.chainId }]
+                });
+            } catch (switchError) {
+                if (switchError.code === 4902) {
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_addEthereumChain',
+                            params: [SONIC_TESTNET]
+                        });
+                    } catch (addError) {
+                        throw new Error('添加 Sonic 测试网失败');
+                    }
+                } else {
+                    throw new Error('切换网络失败');
+                }
+            }
+        }
+
+        // 更新钱包信息
+        async function updateWalletInfo() {
+            try {
+                const balance = await provider.getBalance(userAddress);
+                const network = await provider.getNetwork();
+
+                document.getElementById('walletStatus').textContent = `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
+                document.getElementById('networkStatus').textContent = network.name === 'unknown' ? 'Sonic Testnet' : network.name;
+                document.getElementById('balance').textContent = `${ethers.utils.formatEther(balance).slice(0, 8)} S`;
+                document.getElementById('contractStatus').textContent = '已连接';
+            } catch (error) {
+                console.error('更新钱包信息失败:', error);
+            }
+        }
+
+        // 更新显示金额
+        function updateDisplayAmounts() {
+            const betAmount = document.getElementById('betAmount').value || '10';
+            const tokenSelect = document.getElementById('tokenSelect').value;
+            const symbol = tokenSelect === 'native' ? 'S' : (tokenSelect.includes('MLH') ? 'MLH' : 'MLHG');
+            
+            const vrfFeeDisplay = vrfFee ? ethers.utils.formatEther(vrfFee) : '0.001';
+            const totalDisplay = tokenSelect === 'native' ? 
+                (parseFloat(betAmount) + parseFloat(vrfFeeDisplay)).toFixed(3) : 
+                betAmount;
+            const payoutDisplay = (parseFloat(betAmount) * 1.9).toFixed(2);
+
+            document.getElementById('displayBetAmount').textContent = `${betAmount} ${symbol}`;
+            document.getElementById('displayVrfFee').textContent = `${vrfFeeDisplay} S`;
+            document.getElementById('displayTotal').textContent = `${totalDisplay} ${tokenSelect === 'native' ? 'S' : symbol + ' + ' + vrfFeeDisplay + ' S'}`;
+            document.getElementById('displayPayout').textContent = `${payoutDisplay} ${symbol}`;
+        }
+
+        // 监听输入变化
+        document.getElementById('betAmount').addEventListener('input', updateDisplayAmounts);
+        document.getElementById('tokenSelect').addEventListener('change', updateDisplayAmounts);
+
+        // 下注
+        async function placeBet() {
+            try {
+                const betAmount = document.getElementById('betAmount').value;
+                const tokenSelect = document.getElementById('tokenSelect').value;
+                const prediction = document.querySelector('input[name="prediction"]:checked').value === 'true';
+
+                if (!betAmount || betAmount < 1 || betAmount > 1000) {
+                    throw new Error('投注金额必须在 1-1000 之间');
+                }
+
+                const betAmountWei = ethers.utils.parseEther(betAmount);
+                const btn = document.getElementById('placeBetBtn');
+                btn.disabled = true;
+                btn.innerHTML = '<span class="loading"></span> 下注中...';
+
+                let tx;
+                if (tokenSelect === 'native') {
+                    // 原生代币投注
+                    const totalAmount = betAmountWei.add(vrfFee);
+                    tx = await bettingContract.placeBetNative(prediction, { value: totalAmount });
+                } else {
+                    // ERC20 代币投注
+                    const tokenContract = new ethers.Contract(tokenSelect, ERC20_ABI, signer);
+                    
+                    // 检查授权
+                    const allowance = await tokenContract.allowance(userAddress, BETTING_CONTRACT_ADDRESS);
+                    if (allowance.lt(betAmountWei)) {
+                        showAlert('正在授权代币...', 'info');
+                        const approveTx = await tokenContract.approve(BETTING_CONTRACT_ADDRESS, betAmountWei);
+                        await approveTx.wait();
+                    }
+                    
+                    tx = await bettingContract.placeBetToken(tokenSelect, betAmountWei, prediction, { value: vrfFee });
+                }
+
+                showAlert('交易已提交，等待确认...', 'info');
+                const receipt = await tx.wait();
+                
+                showAlert('下注成功！等待 50 个区块后自动投掷骰子', 'success');
+                
+                // 重置表单
+                document.getElementById('betAmount').value = '10';
+                updateDisplayAmounts();
+                
+                // 刷新历史记录
+                await loadBetHistory();
+                await updateWalletInfo();
+
+            } catch (error) {
+                console.error('下注失败:', error);
+                showAlert('下注失败: ' + error.message, 'error');
+            } finally {
+                const btn = document.getElementById('placeBetBtn');
+                btn.disabled = false;
+                btn.innerHTML = '🎲 下注';
+            }
+        }
+
+        // 加载投注历史
+        async function loadBetHistory() {
+            try {
+                const betIds = await bettingContract.getPlayerBets(userAddress);
+                const container = document.getElementById('betHistoryContainer');
+                
+                if (betIds.length === 0) {
+                    container.innerHTML = '<div style="text-align: center; color: #666; padding: 20px;">暂无投注记录</div>';
+                    return;
+                }
+
+                let historyHtml = '';
+                for (let i = betIds.length - 1; i >= 0; i--) {
+                    const betId = betIds[i];
+                    const bet = await bettingContract.getBetRecord(betId);
+                    const canRequest = await bettingContract.canRequestDiceRoll(betId);
+                    
+                    const tokenSymbol = bet.tokenAddress === ethers.constants.AddressZero ? 'S' : 
+                        (bet.tokenAddress.toLowerCase().includes('mlhg') ? 'MLHG' : 'MLH');
+                    
+                    let statusClass = '';
+                    let statusText = '';
+                    let actionButton = '';
+                    
+                    if (bet.isSettled) {
+                        statusClass = bet.isWinner ? 'winner' : 'loser';
+                        statusText = bet.isWinner ? '🎉 中奖' : '😔 未中奖';
+                    } else if (bet.diceRollCompleted) {
+                        statusText = '🎲 等待结果';
+                    } else if (canRequest) {
+                        statusText = '⏰ 可投掷骰子';
+                        actionButton = `<button class="btn btn-warning" onclick="requestDiceRoll(${betId})">投掷骰子</button>`;
+                    } else {
+                        statusText = '⏳ 等待确认';
+                    }
+
+                    historyHtml += `
+                        <div class="bet-item ${statusClass}">
+                            <div class="bet-details">
+                                <div><strong>投注ID:</strong> ${betId}</div>
+                                <div><strong>金额:</strong> ${ethers.utils.formatEther(bet.amount)} ${tokenSymbol}</div>
+                                <div><strong>预测:</strong> ${bet.predictedIsEven ? '双数' : '单数'}</div>
+                                <div><strong>状态:</strong> ${statusText}</div>
+                                <div><strong>时间:</strong> ${new Date(bet.timestamp * 1000).toLocaleString()}</div>
+                            </div>
+                            ${actionButton}
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = historyHtml;
+            } catch (error) {
+                console.error('加载投注历史失败:', error);
+            }
+        }
+
+        // 请求骰子投掷
+        async function requestDiceRoll(betId) {
+            try {
+                showAlert('正在请求骰子投掷...', 'info');
+                const tx = await bettingContract.requestDiceRoll(betId);
+                await tx.wait();
+                showAlert('骰子投掷请求成功！', 'success');
+                await loadBetHistory();
+            } catch (error) {
+                console.error('请求骰子投掷失败:', error);
+                showAlert('请求失败: ' + error.message, 'error');
+            }
+        }
+
+        // 刷新历史记录
+        async function refreshHistory() {
+            await loadBetHistory();
+            showAlert('历史记录已刷新', 'success');
+        }
+
+        // 设置事件监听
+        function setupEventListeners() {
+            // 监听投注事件
+            bettingContract.on('BetPlaced', (betId, player, tokenAddress, amount, predictedIsEven, timestamp) => {
+                if (player.toLowerCase() === userAddress.toLowerCase()) {
+                    showAlert(`投注成功！投注ID: ${betId}`, 'success');
+                    loadBetHistory();
+                }
+            });
+
+            // 监听结算事件
+            bettingContract.on('BetSettled', (betId, player, diceRequestId, actualIsEven, isWinner, payout, timestamp) => {
+                if (player.toLowerCase() === userAddress.toLowerCase()) {
+                    const result = isWinner ? '🎉 恭喜中奖！' : '😔 很遗憾未中奖';
+                    const resultText = actualIsEven ? '双数' : '单数';
+                    showAlert(`投注 ${betId} 结果: ${resultText} - ${result}`, isWinner ? 'success' : 'error');
+                    loadBetHistory();
+                    updateWalletInfo();
+                }
+            });
+        }
+
+        // 显示提示信息
+        function showAlert(message, type = 'info') {
+            const container = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            container.appendChild(alertDiv);
+            
+            // 3秒后自动移除
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.parentNode.removeChild(alertDiv);
+                }
+            }, 3000);
+        }
+
+        // 监听账户变化
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length === 0) {
+                    location.reload();
+                } else {
+                    userAddress = accounts[0];
+                    updateWalletInfo();
+                    loadBetHistory();
+                }
+            });
+
+            window.ethereum.on('chainChanged', (chainId) => {
+                location.reload();
+            });
+        }
+    </script>
+</body>
+</html>

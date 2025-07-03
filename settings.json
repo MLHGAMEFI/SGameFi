@@ -1,0 +1,24 @@
+{
+	"evmVersion": "cancun",
+	"optimizer": {
+		"enabled": true,
+		"runs": 99999999,
+		"details": {
+			"yul": true
+		}
+	},
+	"viaIR": true,
+	"outputSelection": {
+		"*": {
+			"*": [
+				"evm.bytecode",
+				"evm.deployedBytecode",
+				"devdoc",
+				"userdoc",
+				"metadata",
+				"abi"
+			]
+		}
+	},
+	"libraries": {}
+}

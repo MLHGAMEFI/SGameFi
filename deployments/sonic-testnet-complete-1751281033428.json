@@ -1,0 +1,67 @@
+{
+  "network": "sonic-testnet",
+  "chainId": 57054,
+  "timestamp": 1751281033428,
+  "blockNumber": 49446604,
+  "deployer": "0x3F42974C17247ea6991052108Fa01A00aB369250",
+  "deploymentVersion": "v2.0.0",
+  "contracts": {
+    "diceGame": "0xfc9D49702FfB690d39f268F4Fb96DFfA4f3aF3ac",
+    "bettingContract": "0x4A763ed78e2b840c21Fe02e050CC961fC10B852F",
+    "payoutContract": "0x91D5c382fEd5B9415D0B43Ae21E70f0531092A5F",
+    "miningContract": "0xF77935Db465081E06169907580EaC9a123059a8B"
+  },
+  "transactions": {
+    "diceGame": "0x2d537aabb73a30272a940cc3b191df95f4622a819289e7e6236bbfa672fcab9c",
+    "payoutContract": "0x87507e3e2ec80bb952530c0b39f8fcb42b5032da264a62074fcdabb10dcef434",
+    "bettingContract": "0xc536fb5e930ed45ec380b3baf4fbeaaa112d1f6540db54131f9275ca27e75b83",
+    "miningContract": "0x0235baa10bdee19d29b20ecc730d20aaa988b10f0205b18123f196a27cd95cab"
+  },
+  "config": {
+    "MLH_TOKEN": "0x0A27117Af64E4585d899cC4aAD96A982f3Fa85FF",
+    "MLHG_TOKEN": "0xbca3aEC27772B6dD9aB68cF0a3F3d084f39e8dfb",
+    "VRF_COORDINATOR": "0x6E3efcB244e74Cb898A7961061fAA43C3cf79691",
+    "ADMIN_ADDRESS": "0x3F42974C17247ea6991052108Fa01A00aB369250",
+    "INITIAL_VRF_FUNDING": "2000000000000000000",
+    "INITIAL_PAYOUT_FUNDING": {
+      "MLH": "1000000000000000000000000",
+      "MLHG": "1000000000000000000000000",
+      "NATIVE": "10000000000000000000"
+    },
+    "INITIAL_MINING_FUNDING": {
+      "MLHG": "1000000000000000000000000"
+    }
+  },
+  "constructorArgs": {
+    "diceGame": [
+      "0x6E3efcB244e74Cb898A7961061fAA43C3cf79691"
+    ],
+    "bettingContract": [
+      "0xfc9D49702FfB690d39f268F4Fb96DFfA4f3aF3ac",
+      "0x0A27117Af64E4585d899cC4aAD96A982f3Fa85FF",
+      "0xbca3aEC27772B6dD9aB68cF0a3F3d084f39e8dfb"
+    ],
+    "payoutContract": [
+      "0x0A27117Af64E4585d899cC4aAD96A982f3Fa85FF",
+      "0xbca3aEC27772B6dD9aB68cF0a3F3d084f39e8dfb",
+      "0x3F42974C17247ea6991052108Fa01A00aB369250"
+    ],
+    "miningContract": [
+      "0x0A27117Af64E4585d899cC4aAD96A982f3Fa85FF",
+      "0xbca3aEC27772B6dD9aB68cF0a3F3d084f39e8dfb",
+      "0x3F42974C17247ea6991052108Fa01A00aB369250"
+    ]
+  },
+  "deploymentStatus": {
+    "completed": true,
+    "configurationCompleted": true,
+    "verificationCompleted": true,
+    "readyForProduction": true
+  },
+  "deploymentStats": {
+    "totalContracts": 4,
+    "totalTransactions": 4,
+    "estimatedGasUsed": "待计算",
+    "deploymentDuration": "待计算"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "network": "sonic-testnet",
+  "chainId": 57054,
+  "rpcUrl": "https://rpc.blaze.soniclabs.com",
+  "blockExplorer": "https://sonicscan.org",
+  "contracts": {
+    "DiceGame": "0xfc9D49702FfB690d39f268F4Fb96DFfA4f3aF3ac",
+    "BettingContract": "0x4A763ed78e2b840c21Fe02e050CC961fC10B852F",
+    "PayoutContract": "0x91D5c382fEd5B9415D0B43Ae21E70f0531092A5F",
+    "MiningContract": "0xF77935Db465081E06169907580EaC9a123059a8B"
+  },
+  "tokens": {
+    "MLH": "0x0A27117Af64E4585d899cC4aAD96A982f3Fa85FF",
+    "MLHG": "0xbca3aEC27772B6dD9aB68cF0a3F3d084f39e8dfb"
+  }
+}

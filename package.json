@@ -1,0 +1,45 @@
+{
+  "name": "vue",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy:betting": "npx hardhat run scripts/deploy-betting.js --network sonic-testnet",
+    "deploy:payout": "npx hardhat run scripts/deploy-payout.js --network sonic-testnet",
+    "fund:payout": "npx hardhat run scripts/fund-payout-contract.js --network sonic-testnet",
+    "auto-payout:start": "npx hardhat run scripts/start-auto-payout.js --network sonic-testnet",
+    "auto-payout:service": "npx hardhat run scripts/auto-payout-service.cjs --network sonic-testnet",
+    "auto-payout:service-start": "node scripts/start-auto-payout-service.cjs start",
+    "auto-payout:service-stop": "node scripts/start-auto-payout-service.cjs stop",
+    "auto-payout:service-restart": "node scripts/start-auto-payout-service.cjs restart",
+    "auto-payout:service-status": "node scripts/start-auto-payout-service.cjs status",
+    "auto-payout:service-logs": "node scripts/start-auto-payout-service.cjs logs",
+    "auto-payout:service-logs-error": "node scripts/start-auto-payout-service.cjs logs error",
+    "auto-payout:service-clean": "node scripts/start-auto-payout-service.cjs clean",
+    "payout:monitor": "npx hardhat run scripts/payout-monitor.cjs --network sonic-testnet",
+    "payout:status": "npx hardhat run scripts/payout-monitor.js --network sonic-testnet -- status",
+    "payout:batch": "npx hardhat run scripts/payout-monitor.js --network sonic-testnet -- batch",
+    "test:auto-payout": "npx hardhat test test/AutoPayout.test.js",
+    "integration:example": "npx hardhat run scripts/integration-example.js --network sonic-testnet",
+    "deploy:mining": "npx hardhat run scripts/deploy-mining.js --network sonic-testnet",
+    "mining:service": "node scripts/mining-service.cjs",
+    "test:mining": "npx hardhat test test/MiningContract.test.js",
+    "mining:stats": "npx hardhat run scripts/mining-stats.js --network sonic-testnet"
+  },
+  "dependencies": {
+    "@paintswap/vrf": "^0.0.9",
+    "ethers": "^6.14.4",
+    "vue": "^3.4.29"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^6.0.0",
+    "@openzeppelin/contracts": "^5.3.0",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "dotenv": "^16.6.0",
+    "hardhat": "^2.25.0",
+    "vite": "^5.3.1"
+  }
+}

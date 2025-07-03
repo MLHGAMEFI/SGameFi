@@ -1,0 +1,84 @@
+{
+  "name": "Sonic Blaze Testnet Auto Payout Service Configuration",
+  "description": "Sonic测试网自动派奖服务优化配置",
+  "version": "1.0.0",
+  "lastUpdated": "2024-01-30",
+  
+  "network": {
+    "name": "Sonic Blaze Testnet",
+    "chainId": 57054,
+    "symbol": "S",
+    "rpcUrl": "https://rpc.blaze.soniclabs.com",
+    "explorerUrl": "https://testnet.soniclabs.com",
+    "faucetUrl": "https://testnet.soniclabs.com/account"
+  },
+  
+  "contracts": {
+    "bettingContract": "待部署",
+    "payoutContract": "待部署",
+    "mlhToken": "待部署",
+    "mlhgToken": "待部署",
+    "usdcTestToken": "待部署"
+  },
+  
+  "gasConfig": {
+    "gasPrice": "2000000000",
+    "gasPriceGwei": "2",
+    "submitPayoutGasLimit": 400000,
+    "executePayoutGasLimit": 600000,
+    "defaultGasLimit": 300000,
+    "maxFeePerGas": "3000000000",
+    "maxPriorityFeePerGas": "1000000000",
+    "description": "优化后的Gas配置，从25 Gwei降低到2 Gwei"
+  },
+  
+  "retryConfig": {
+    "maxRetries": 3,
+    "baseRetryDelay": 2000,
+    "exponentialBackoff": true,
+    "description": "智能重试机制，指数退避策略"
+  },
+  
+  "confirmationConfig": {
+    "blockConfirmations": 1,
+    "description": "Sonic网络快速确认，1个区块即可"
+  },
+  
+  "monitoringConfig": {
+    "statusReportInterval": 300000,
+    "networkMonitoringEnabled": true,
+    "balanceWarningThreshold": "0.1",
+    "gasPriceWarningMultiplier": 1.5,
+    "rpcLatencyWarningThreshold": 2000,
+    "description": "网络监控和警告配置"
+  },
+  
+  "eventProcessingConfig": {
+    "historicalEventLookback": 1000,
+    "retryQueueCheckInterval": 10000,
+    "duplicateEventPrevention": true,
+    "description": "事件处理和重试队列配置"
+  },
+  
+  "securityConfig": {
+    "operatorRoleRequired": true,
+    "networkValidationEnabled": true,
+    "balanceCheckEnabled": true,
+    "description": "安全验证配置"
+  },
+  
+  "loggingConfig": {
+    "detailedGasReporting": true,
+    "transactionHashLogging": true,
+    "performanceMetrics": true,
+    "errorStackTraces": false,
+    "description": "日志记录配置"
+  },
+  
+  "optimizations": {
+    "smartGasEstimation": true,
+    "batchProcessing": false,
+    "parallelExecution": false,
+    "description": "性能优化功能开关"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "name": "sgamefi-betting-contract",
+  "version": "1.0.0",
+  "description": "SGameFi下注合约项目",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:betting": "hardhat test test/BettingContract.test.js",
+    "deploy:betting": "hardhat run scripts/deploy-betting.js --network sonicTestnet",
+    "deploy:complete": "hardhat run scripts/deploy-complete-system.js --network sonicTestnet",
+    "deploy:local": "hardhat run scripts/deploy-complete-system.js --network localhost",
+    "verify:betting": "hardhat verify --network sonicTestnet",
+    "node": "hardhat node",
+    "clean": "hardhat clean",
+    "coverage": "hardhat coverage"
+  },
+  "keywords": [
+    "solidity",
+    "ethereum",
+    "smart-contracts",
+    "betting",
+    "dice-game",
+    "vrf"
+  ],
+  "author": "SGameFi Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "chai": "^4.2.0",
+    "ethers": "^6.4.0",
+    "hardhat": "^2.19.0",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.8.1",
+    "dotenv": "^16.3.1"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.0"
+  }
+}
