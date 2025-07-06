@@ -14,126 +14,7 @@ SGameFi 是一个运行在 Sonic 区块链上的创新 GameFi 平台，集成了
 - **🪙 MLHG 代币**：平台原生代币和经济系统
 - **🔒 安全保障**：多重安全检查和验证机制
 
-## 🚀 快速开始
 
-### 环境要求
-
-- Node.js >= 16.0.0
-- npm >= 8.0.0
-- Git
-
-### 安装依赖
-
-```bash
-# 克隆项目
-git clone <repository-url>
-cd SGameFi
-
-# 安装依赖
-npm install
-```
-
-### 环境配置
-
-```bash
-# 复制环境变量模板
-cp .env.example .env
-
-# 编辑 .env 文件，填入必要的配置
-# 重要：请确保设置正确的 PRIVATE_KEY
-```
-
-### 安全检查
-
-```bash
-# 运行安全检查（推荐在任何操作前执行）
-npm run security:check
-
-# 运行部署前检查
-npm run deploy:check
-```
-
-### 编译和测试
-
-```bash
-# 编译合约
-npx hardhat compile
-
-# 运行测试
-npm run test:all
-```
-
-### 部署合约
-
-```bash
-# 部署到测试网
-npm run deploy:all:testnet
-
-# 部署 MLHG 代币系统
-npm run deploy:mlhg:testnet
-```
-
-## 📁 项目结构
-
-```
-SGameFi/
-├── contracts/           # 智能合约
-│   ├── core/           # 核心游戏合约
-│   ├── mlhg/           # MLHG 代币系统
-│   ├── interfaces/     # 合约接口
-│   └── test/           # 测试合约
-├── scripts/            # 部署和工具脚本
-│   ├── deploy/         # 部署脚本
-│   └── utils/          # 工具脚本
-├── test/               # 测试文件
-├── docs/               # 项目文档
-├── types/              # TypeScript 类型定义
-├── src/                # 前端源码
-└── public/             # 静态资源
-```
-
-## 🛠️ 开发工具
-
-### 常用命令
-
-```bash
-# 开发服务器
-npm run dev
-
-# 构建项目
-npm run build
-
-# 安全检查
-npm run security:check
-
-# 部署检查
-npm run deploy:check
-
-# 查看玩家余额
-npm run player:balance
-
-# 手动支付
-npm run payout:manual
-
-# 监控支付
-npm run payout:monitor
-```
-
-### 服务管理
-
-```bash
-# 启动自动支付服务
-npm run auto-payout:service-start
-
-# 停止服务
-npm run auto-payout:service-stop
-
-# 查看服务状态
-npm run auto-payout:service-status
-
-# 查看服务日志
-npm run auto-payout:service-logs
-```
 
 ## 🔒 安全性
 
@@ -147,14 +28,7 @@ npm run auto-payout:service-logs
 
 详细信息请参考 [安全性指南](./SECURITY.md)
 
-## 📚 文档
 
-- [项目概述](./docs/README.md)
-- [智能合约文档](./docs/contracts.md)
-- [部署指南](./docs/deployment.md)
-- [API 文档](./docs/API.md)
-- [安全性指南](./SECURITY.md)
-- [贡献指南](./CONTRIBUTING.md)
 
 ## 🌐 网络配置
 
@@ -168,49 +42,7 @@ npm run auto-payout:service-logs
 - **RPC URL**: https://rpc.soniclabs.com/
 - **Explorer**: https://soniclabs.com/
 
-## 🧪 测试
 
-```bash
-# 运行所有测试
-npm run test:all
-
-# 运行特定测试
-npm run test:auto-payout
-npm run test:mining
-
-# 集成测试示例
-npm run integration:example
-```
-
-## 🚀 部署
-
-### 测试网部署
-
-```bash
-# 1. 安全检查
-npm run security:check
-npm run deploy:check
-
-# 2. 部署核心合约
-npm run deploy:all:testnet
-
-# 3. 部署 MLHG 系统
-npm run deploy:mlhg:testnet
-
-# 4. 启动服务
-npm run auto-payout:service-start
-```
-
-### 主网部署
-
-```bash
-# ⚠️ 主网部署需要特别谨慎
-# 1. 确保在测试网充分测试
-# 2. 运行完整的安全检查
-# 3. 准备充足的 Gas 费用
-
-npm run deploy:all:mainnet
-```
 
 ## 🤝 贡献
 
