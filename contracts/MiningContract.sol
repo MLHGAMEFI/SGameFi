@@ -15,6 +15,5 @@ import "@openzeppelin/contracts/utils/Pausable.sol";
  * @dev 与BettingContract分离，确保资金安全和职责分离，针对Sonic测试网优化gas费用
  *      实现动态减产机制：初始比例1:100，每天减产1%
  */
-contract MiningContract is AccessControl, ReentrancyGuard, Pausable {
-    using SafeERC20 for IERC20;
+
 
